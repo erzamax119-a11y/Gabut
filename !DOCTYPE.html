@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Dekripsi Terinfeksi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #050505;
+            color: #00ff41;
+            overflow: hidden;
+            transition: background-color 0.1s;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Glitch Effect */
+        .glitch-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 0 auto;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            overflow: hidden;
+            background: #000;
+        }
+
+        .glitch-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(140%);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+
+        .scanner-line {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: #00ff41;
+            box-shadow: 0 0 15px #00ff41;
+            top: 0;
+            z-index: 10;
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: -5%; }
+            100% { top: 105%; }
+        }
+
+        @keyframes glitch-anim {
+            0% { clip-path: inset(80% 0 1% 0); transform: translateX(-3px); }
+            10% { clip-path: inset(10% 0 70% 0); transform: translateX(3px); }
+            20% { clip-path: inset(0% 0 0% 0); }
+            100% { clip-path: inset(0% 0 0% 0); }
+        }
+
+        /* Cyber Attack Animation */
+        .cyber-attack-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 0, 0, 0.2);
+            z-index: 100;
+            display: none;
+            pointer-events: none;
+            animation: pulse-red 0.1s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { background: rgba(255, 0, 0, 0.4); }
+            50% { background: rgba(0, 0, 0, 0.8); }
+            100% { background: rgba(255, 0, 0, 0.4); }
+        }
+
+        .shake { animation: shake-anim 0.05s infinite; }
+        @keyframes shake-anim {
+            0% { transform: translate(5px, 5px); }
+            50% { transform: translate(-5px, -5px); }
+            100% { transform: translate(5px, -5px); }
+        }
+
+        .hidden-doc { display: none; }
+
+        #disconnectScreen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: black;
+            color: white;
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .attack-text {
+            position: fixed;
+            color: red;
+            font-weight: bold;
+            font-size: 2rem;
+            z-index: 110;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cyberOverlay" class="cyber-attack-bg"></div>
+    
+    <div id="disconnectScreen">
+        <h1 class="text-6xl font-bold text-red-600 mb-4 animate-pulse">SISTEM CRASH</h1>
+        <p class="text-xl tracking-widest">SERANGAN CYBER TERDETEKSI - DATA DIHAPUS</p>
+        <button onclick="location.reload()" class="mt-12 border-2 border-red-600 text-red-600 font-bold px-10 py-3 hover:bg-red-600 hover:text-white transition-all">REBOOT</button>
+    </div>
+
+    <div id="mainContent" class="max-w-xl w-full text-center p-8 border border-[#00ff41]/30 bg-black/60 backdrop-blur-md relative">
+        <h1 id="headerTitle" class="text-2xl font-bold mb-8 tracking-[0.3em] text-[#00ff41]">[ TERMINAL DEKRIPSI ]</h1>
+        
+        <div id="visualizer" class="mb-8 relative">
+            <div id="imgContainer" class="glitch-container">
+                <div class="scanner-line"></div>
+                <!-- Gambar Awal -->
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop" alt="User" class="glitch-img" id="targetImg">
+                
+                <!-- Overlay Teks Ino Corrupted (Hidden Initially) -->
+                <div id="inoText" class="absolute inset-0 flex items-center justify-center bg-black/80 text-red-500 font-bold text-2xl hidden p-4 text-center">
+                    ino = (DATA_RUSAK_ERROR_404)
+                </div>
+            </div>
+        </div>
+
+        <div id="loginSection" class="space-y-6">
+            <input type="text" id="accessCode" placeholder="KODE AKSES" class="bg-transparent border-b-2 border-[#00ff41] text-[#00ff41] text-center text-2xl outline-none w-full max-w-xs uppercase py-3 tracking-[0.6em]">
+            <div class="pt-4">
+                <button onclick="checkCode()" class="w-full bg-[#00ff41] text-black font-bold py-4 px-10 hover:bg-green-400 transition-all uppercase tracking-widest text-sm">
+                    Dekripsi Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Dokumen Velino -->
+        <div id="velinoDoc" class="hidden-doc space-y-6 py-4">
+            <div class="border-2 border-[#00ff41] p-6 bg-[#00ff41]/10">
+                <h2 class="text-[#00ff41] font-bold tracking-[0.2em] mb-4">HASIL DEKRIPSI: VELINO</h2>
+                <p id="velDesc" class="text-2xl font-extrabold text-white transition-opacity duration-500">Vel = Marvel</p>
+            </div>
+            <p id="systemWarning" class="text-xs text-yellow-500 animate-pulse hidden">MENGAKSES FRAGMEN KEDUA...</p>
+        </div>
+
+        <!-- Dokumen ERVIAN3 (Old Code) -->
+        <div id="oldAccountDoc" class="hidden-doc space-y-4 py-4">
+            <div class="border-2 border-red-600 p-6 bg-red-950/20">
+                <p class="text-2xl font-extrabold text-white">Old Account: ervianLatif3</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CODE_3 = "ERVIAN3";
+        const CODE_VELINO = "VELINO";
+
+        function checkCode() {
+            const input = document.getElementById('accessCode').value.toUpperCase();
+            
+            if (input === CODE_VELINO) {
+                runVelinoSequence();
+            } else if (input === CODE_3) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('oldAccountDoc').style.display = 'block';
+            } else {
+                alert("KODE SALAH");
+            }
+        }
+
+        function runVelinoSequence() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('velinoDoc').style.display = 'block';
+            
+            // Tahap 1: Tampilkan Vel = Marvel
+            setTimeout(() => {
+                document.getElementById('systemWarning').classList.remove('hidden');
+                
+                // Tahap 2: Ganti Gambar menjadi Ino Corrupted
+                setTimeout(() => {
+                    document.getElementById('inoText').classList.remove('hidden');
+                    document.getElementById('targetImg').style.filter = "invert(1) blur(5px)";
+                    
+                    // Tahap 3: Serangan Cyber
+                    setTimeout(() => {
+                        startCyberAttack();
+                    }, 1500);
+                }, 2000);
+            }, 1000);
+        }
+
+        function startCyberAttack() {
+            const overlay = document.getElementById('cyberOverlay');
+            const mainContent = document.getElementById('mainContent');
+            overlay.style.display = 'block';
+            mainContent.classList.add('shake');
+            
+            // Spawn random attack text
+            const words = ["HACKED", "INTRUSION", "BYPASS", "SYSTEM FAILURE", "MALWARE", "DATA LOSS"];
+            const interval = setInterval(() => {
+                const div = document.createElement('div');
+                div.className = 'attack-text';
+                div.innerText = words[Math.floor(Math.random() * words.length)];
+                div.style.left = Math.random() * 80 + '%';
+                div.style.top = Math.random() * 80 + '%';
+                div.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+                document.body.appendChild(div);
+            }, 100);
+
+            // Tahap Akhir: Crash
+            setTimeout(() => {
+                clearInterval(interval);
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('disconnectScreen').style.display = 'flex';
+                overlay.style.display = 'none';
+                document.body.style.backgroundColor = "black";
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
